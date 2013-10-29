@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# script and app location
+scriptloc="$(dirname $0)"
+app="$(dirname $0 | sed 's/\(\.app\).*/\1/')"
+
+# instructions
+usage() {
+echo "usage: $0 [-h] [-i] [-d]
+
+options:
+	-h Show this message
+	-i Set the icon
+	-d Set the ID"
+}
+
+# read options
+while getopts hi:d: OPTION
+do
+		case "${OPTION}"
+		in
+			h) usage; exit 1;;
+			i) icon=${OPTARG};;
+			d) id=${OPTARG};;
+		esac
+done
+shift $((OPTIND-1))
+
+# stop executing if an option is missing
+if [[ -z "${icon}" ]] || [[ -z "${id}" ]]; then usage && exit 1; fi
+
+# set options
+cp "${icon}" "${app}/Contents/Resources/applet.icns"
+sed -i '' "s/com.vitorgalvao.notificator/${id}/" "${app}/Contents/Info.plist"
+
+# delete this script
+rm "$0"
