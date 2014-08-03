@@ -10,7 +10,7 @@ Due to [security features](http://support.apple.com/kb/ht5290) in OS X, you have
 
 ## Why
 
-[terminal-notifier](https://github.com/alloy/terminal-notifier) is an amazing tool, yet with an annoyance — its license. It’s MIT, which is a very permissive and popular license, but I don’t feel it’s permissive enough (I won’t go on a rant about this, you can read [this blog post](http://zacharyvoase.com/2010/01/04/unlicense/) by @zacharyvoase that sums up most of my feelings on it).
+[terminal-notifier](https://github.com/alloy/terminal-notifier) is an amazing tool, yet with an annoyance — its license. It’s MIT, which is a very permissive and popular license, but I don’t feel it’s permissive enough (I won’t go on a rant about this, you can read [this blog post](http://zacharyvoase.com/2010/01/04/unlicense/) by [zacharyvoase](https://github.com/zacharyvoase) that sums up most of my feelings on it).
 
 I used this mainly with [my set of alfred workflows](https://github.com/vitorgalvao/alfred-workflows), wich themselves try to be public domain as much as possible, and I did not want that freedom/flexibility to be encumbered due to external apps. This changed later (including the apps, not my opinion on the matter), as the restriction on running this, as explained earlier, made for a worse experience.
 
