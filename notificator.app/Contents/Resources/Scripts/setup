@@ -9,20 +9,20 @@ usage() {
 echo "usage: $0 [-h] [-i] [-d]
 
 options:
-	-h Show this message
-	-i Set the icon
-	-d Set the ID"
+  -h Show this message
+  -i Set the icon
+  -d Set the ID"
 }
 
 # read options
 while getopts hi:d: OPTION
 do
-		case "${OPTION}"
-		in
-			h) usage; exit 1;;
-			i) icon=${OPTARG};;
-			d) id=${OPTARG};;
-		esac
+  case "${OPTION}"
+  in
+    h) usage; exit 1;;
+    i) icon=${OPTARG};;
+    d) id=${OPTARG};;
+  esac
 done
 shift $((OPTIND-1))
 
