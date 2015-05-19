@@ -9,24 +9,24 @@ usage() {
 echo "usage: $0 [-h] [-m] [-t] [-s] [-a]
 
 options:
-	-h Show this message
-	-m Message
-	-t Title
-	-s Subtitle
-	-a Sound"
+  -h Show this message
+  -m Message
+  -t Title
+  -s Subtitle
+  -a Sound"
 }
 
 # read options
 while getopts hm:t:s:a: OPTION
 do
-		case "${OPTION}"
-		in
-			h) usage; exit 1;;
-			m) text=${OPTARG};;
-			t) title=${OPTARG};;
-			s) subtitle=${OPTARG};;
-			a) sound=${OPTARG};;
-		esac
+  case "${OPTION}"
+  in
+    h) usage; exit 1;;
+    m) text=${OPTARG};;
+    t) title=${OPTARG};;
+    s) subtitle=${OPTARG};;
+    a) sound=${OPTARG};;
+  esac
 done
 shift $((OPTIND-1))
 
