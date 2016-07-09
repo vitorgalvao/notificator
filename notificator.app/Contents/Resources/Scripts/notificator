@@ -35,9 +35,9 @@ if [[ -z "${text}" ]]; then usage && exit 1; fi
 
 # set options
 text="\"${text}\""
-if [[ ! -z "${title}" ]]; then title="with title \"${title}\""; fi
-if [[ ! -z "${subtitle}" ]]; then subtitle="subtitle \"${subtitle}\""; fi
-if [[ ! -z "${sound}" ]]; then sound="sound name \"${sound}\""; fi
+if [[ -n "${title}" ]]; then title="with title \"${title}\""; fi
+if [[ -n "${subtitle}" ]]; then subtitle="subtitle \"${subtitle}\""; fi
+if [[ -n "${sound}" ]]; then sound="sound name \"${sound}\""; fi
 
 # set notification output
 osacompile -e "display notification ${text} ${title} ${subtitle} ${sound}" -e "delay 1" -o "${scriptloc}/main.scpt"
