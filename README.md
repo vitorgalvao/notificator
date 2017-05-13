@@ -1,12 +1,12 @@
 # Notificator
 
-Command-line tool to send Mac OS X notifications with a custom icon.
+Command-line tool to send macOS notifications with a custom icon.
 
 ![](http://imgur.com/y3RNVkI.png)
 
 ## Interested in codesigning the app?
 
-Due to [security features](http://support.apple.com/kb/ht5290) in OS X, you have to approve for the app to run, at least once, before it starts working correctly. The way to bypass this is to codesign it, which requires an Apple Mac Developer account, which I currently do not have, or plan on getting. If you’d like to codesign the releases, feel free to contact me — you can even have full control over the future development of the app if you so wish, I’d just like for this to exist in a public domain form.
+Due to [security features](http://support.apple.com/kb/ht5290) in macOS, you have to approve for the app to run, at least once, before it starts working correctly. The way to bypass this is to codesign it, which requires an Apple Mac Developer account, which I currently do not have, or plan on getting. If you’d like to codesign the releases, feel free to contact me — you can even have full control over the future development of the app if you so wish, I’d just like for this to exist in a public domain form.
 
 ## Why
 
