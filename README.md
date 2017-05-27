@@ -2,7 +2,7 @@
 
 macOS notifications tool unencumbered by licenses that is blazing fast to set up with your own icon and bundle ID.
 
-![](https://i.imgur.com/wbum0IB.png)
+<img src="https://i.imgur.com/tLOrAZb.png" width="378">
 
 ### Download and setup
 
