@@ -7,7 +7,7 @@ for (var i = 0; i < argc; i++) { argv.push(ObjC.unwrap(args.objectAtIndex(i))) }
 delete args
 
 // Notification script
-if (argv.length < 2) throw new Error('You need to give at least one argument from the CLI. You cannot run this by double-clicking the app bundle.') // We use '2' since the script will always see at least one argument Ñ the applet itself
+if (argv.length < 2) throw new Error('You need to give at least one argument from the CLI. You cannot run this by double-clicking the app bundle.') // We use '2' since the script will always see at least one argument: the applet itself
 
 const message = argv[1]
 const title = argv[2]
