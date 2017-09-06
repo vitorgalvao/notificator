@@ -13,17 +13,17 @@ curl --silent --location 'https://raw.github.com/vitorgalvao/notificator/master/
 /tmp/setup_notificator --icon {{path_to_an_image}} --bundle-id {{your_bundle_id}}
 ```
 
-Call it with `--help` to see all flags.
+Call it with `--help` to see all the options.
 
 ### Usage
 
-Trigger a notification by opening the applet with positional arguments:
+Trigger a notification by calling the `notificator` script inside the app:
 
 ```bash
-./Notificator.app/Contents/MacOS/applet 'This notification is an example' 'It has custom text' 'And even a sound' 'Frog'
+Notificator.app/Contents/Resources/Scripts/notificator --title 'This is a notification' --subtitle 'It has a subtitle' --message 'And plays a sound' --sound 'Frog'
 ```
 
-Only the first argument — the message — is mandatory. Arguments are, in order: `message` `title` `subtitle` `sound`. If you want to skip an argument (set a sound but not a subtitle, for example), make the argument you want to skip empty (`''`). For a list of avaible system sounds, look inside `/System/Library/Sounds`.
+Only `--message` is mandatory; all other flags are optional. Call it with `--help` to see all the options.
 
 #### License
 
