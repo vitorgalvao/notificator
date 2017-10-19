@@ -1,4 +1,4 @@
-// Build argv/argc in a way that can be used from the applet inside the .app bundle
+// Build argv/argc in a way that can be used from the applet inside the app bundle
 ObjC.import('Foundation')
 const args = $.NSProcessInfo.processInfo.arguments
 const argv = []
