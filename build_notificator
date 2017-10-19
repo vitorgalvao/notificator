@@ -1,0 +1,23 @@
+#!/bin/bash
+
+readonly program_dir="$(dirname "${0}")"
+readonly jxa_script="${program_dir}/Notificator_JXA.js"
+readonly shell_script="${program_dir}/Notificator_script.bash"
+readonly output_app="${HOME}/Desktop/Notificator.app"
+readonly output_app_plist="${output_app}/Contents/Info.plist"
+readonly output_app_shell_script="${output_app}/Contents/Resources/Scripts/notificator"
+
+if [[ ! -f "${jxa_script}" ]] || [[ ! -f "${shell_script}" ]]; then
+  echo 'Did not find the necessary scripts in the current directory.' >&2
+  exit 1
+fi
+
+osacompile -l JavaScript -o "${output_app}" "${jxa_script}"
+
+/usr/libexec/PlistBuddy -c 'add :CFBundleIdentifier string com.vitorgalvao.notificator' "${output_app_plist}"
+/usr/libexec/PlistBuddy -c 'add :LSUIElement string 1' "${output_app_plist}"
+
+cp "${shell_script}" "${output_app_shell_script}"
+chmod +x "${output_app_shell_script}"
+
+echo "Built app as ${output_app}"
