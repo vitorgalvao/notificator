@@ -10,14 +10,16 @@ readonly applet="$(dirname "$(dirname "$(dirname "${0}")")")/MacOS/applet"
 readonly app="$(dirname "$(dirname "$(dirname "${applet}")")")"
 
 function syntax_error {
-  echo "${program}: ${1}\nTry \`${program} --help\` for more information." >&2
+  echo -e "${program}: ${1}\nTry \`${program} --help\` for more information." >&2
   exit 1
 }
 
 function usage {
   echo "
-    usage: ${program} [options]
-    options:
+    Usage:
+      ${program} [options]
+
+    Options:
       -m, --message <text>       Message text (mandatory).
       -t, --title <text>         Title text.
       -s, --subtitle <text>      Subtitle text.

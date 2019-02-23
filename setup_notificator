@@ -4,14 +4,16 @@ readonly program="$(basename "${0}")"
 readonly tmp_dir="$(mktemp -d)"
 
 function syntax_error {
-  echo "${program}: ${1}\nTry \`${program} --help\` for more information." >&2
+  echo -e "${program}: ${1}\nTry \`${program} --help\` for more information." >&2
   exit 1
 }
 
 function usage {
   echo "
-    usage: ${program} [options]
-    options:
+    Usage:
+      ${program} [options]
+
+    Options:
       -i, --icon <path>        Path to image to use as the icon.
       -b, --bundle-id <text>   Bundle ID to use.
       -h, --help               Show this help.
