@@ -3,7 +3,7 @@ ObjC.import('Foundation')
 const args = $.NSProcessInfo.processInfo.arguments
 const argv = []
 const argc = args.count
-for (var i = 0; i < argc; i++) { argv.push(ObjC.unwrap(args.objectAtIndex(i))) } // Use 'var' instead of 'let' so it works on pre-Sierra
+for (let i = 0; i < argc; i++) { argv.push(ObjC.unwrap(args.objectAtIndex(i))) }
 delete args
 
 // Notification script
