@@ -14,7 +14,7 @@ macOS notifications tool unencumbered by licenses that is blazing fast to set up
 
 ```bash
 # Download the setup script
-curl --silent --location 'https://raw.github.com/vitorgalvao/notificator/master/setup_notificator' --output '/tmp/setup_notificator' && chmod +x '/tmp/setup_notificator'
+curl --silent 'https://raw.githubusercontent.com/vitorgalvao/notificator/master/setup_notificator' --output '/tmp/setup_notificator' && chmod +x '/tmp/setup_notificator'
 # Run it with your options
 /tmp/setup_notificator --icon {{path_to_an_image}} --bundle-id {{your_bundle_id}}
 ```
