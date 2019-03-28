@@ -1,6 +1,7 @@
 #!/bin/bash
 
 readonly program="$(basename "${0}")"
+readonly app_name='Notificator.app'
 readonly tmp_dir="$(mktemp -d)"
 
 function syntax_error {
@@ -11,12 +12,13 @@ function syntax_error {
 function usage {
   echo "
     Usage:
-      ${program} [options]
+      ${program} --icon <path> --bundle-id <text> [--output-dir <path>]
 
     Options:
-      -i, --icon <path>        Path to image to use as the icon.
-      -b, --bundle-id <text>   Bundle ID to use.
-      -h, --help               Show this help.
+      -i, --icon <path>         Path to image to use as the icon.
+      -b, --bundle-id <text>    Bundle ID to use.
+      -o, --output-dir <path>   Directory to output the app to. Defaults to the Desktop.
+      -h, --help                Show this help.
   " | sed -E 's/^ {4}//'
 }
 
@@ -50,6 +52,10 @@ while [[ "${1}" ]]; do
       bundle_id="${2}"
       shift
       ;;
+    -o | --output-dir)
+      output_dir="${2}"
+      shift
+      ;;
     -*)
       syntax_error "unrecognized option: ${1}"
       ;;
@@ -61,7 +67,7 @@ while [[ "${1}" ]]; do
 done
 
 if [[ -z "${image}" ]] || [[ -z "${bundle_id}" ]]; then
-  echo 'You need to give both the path to an image and a bundle ID' >&2
+  echo 'You need to give both the path to an image and a bundle ID.' >&2
   exit 1
 fi
 
@@ -69,8 +75,12 @@ readonly notificator_release="$(curl --silent 'https://api.github.com/repos/vito
 
 curl --silent --location "${notificator_release}" | ditto -xk - "${tmp_dir}"
 [[ "${image}" == *'.icns' ]] && icon="${image}" || icon="$(make_icns "${image}")"
-cp "${icon}" "${tmp_dir}/Notificator.app/Contents/Resources/applet.icns"
-/usr/libexec/PlistBuddy -c "set CFBundleIdentifier ${bundle_id}" "${tmp_dir}/Notificator.app/Contents/Info.plist"
+cp "${icon}" "${tmp_dir}/${app_name}/Contents/Resources/applet.icns"
+/usr/libexec/PlistBuddy -c "set CFBundleIdentifier ${bundle_id}" "${tmp_dir}/${app_name}/Contents/Info.plist"
 
-mv "${tmp_dir}/Notificator.app" "${HOME}/Desktop"
-echo 'Notificator was downloaded to your Desktop'
+if [[ -n "${output_dir}" ]]; then
+  mv "${tmp_dir}/${app_name}" "${output_dir}"
+else
+  mv "${tmp_dir}/${app_name}" "${HOME}/Desktop"
+  echo "Notificator was downloaded to your Desktop."
+fi
