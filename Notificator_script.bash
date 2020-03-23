@@ -9,11 +9,6 @@ readonly program="$(basename "${0}")"
 readonly applet="$(dirname "$(dirname "$(dirname "${0}")")")/MacOS/applet"
 readonly app="$(dirname "$(dirname "$(dirname "${applet}")")")"
 
-function syntax_error {
-  echo -e "${program}: ${1}\nTry \`${program} --help\` for more information." >&2
-  exit 1
-}
-
 function usage {
   echo "
     Usage:
@@ -51,7 +46,8 @@ while [[ "${1}" ]]; do
       shift
       ;;
     -*)
-      syntax_error "Unrecognised option: ${1}"
+      echo "Unrecognised option: ${1}"
+      exit 1
       ;;
     *)
       break
