@@ -18,9 +18,9 @@ function usage {
 }
 
 function make_icns {
-  local file="${1}"
-  local iconset="$(mktemp -d)"
-  local output_icon="$(mktemp).icns"
+  local -r file="${1}"
+  local -r iconset="$(mktemp -d)"
+  local -r output_icon="$(mktemp).icns"
 
   for size in {16,32,64,128,256,512}; do
     sips --resampleHeightWidth "${size}" "${size}" "${file}" --out "${iconset}/icon_${size}x${size}.png" &> /dev/null
