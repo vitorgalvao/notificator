@@ -23,6 +23,8 @@ function usage {
   " | sed -E 's/^ {4}//'
 }
 
+# Options
+args=()
 while [[ "${1}" ]]; do
   case "${1}" in
     -h | --help)
@@ -45,16 +47,22 @@ while [[ "${1}" ]]; do
       notificator_sound="${2}"
       shift
       ;;
+    --)
+      shift
+      args+=("${@}")
+      break
+      ;;
     -*)
       echo "Unrecognised option: ${1}"
       exit 1
       ;;
     *)
-      break
+      args+=("${1}")
       ;;
   esac
   shift
 done
+set -- "${args[@]}"
 
 if [[ -z "${notificator_message}" ]]; then
   echo 'A message is mandatory.' >&2

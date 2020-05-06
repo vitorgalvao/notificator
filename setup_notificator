@@ -33,6 +33,8 @@ function make_icns {
   echo "${output_icon}" # So its path is returned when the function ends
 }
 
+# Options
+args=()
 while [[ "${1}" ]]; do
   case "${1}" in
     -h | --help)
@@ -51,16 +53,22 @@ while [[ "${1}" ]]; do
       output_dir="${2}"
       shift
       ;;
+    --)
+      shift
+      args+=("${@}")
+      break
+      ;;
     -*)
       echo "Unrecognised option: ${1}"
       exit 1
       ;;
     *)
-      break
+      args+=("${1}")
       ;;
   esac
   shift
 done
+set -- "${args[@]}"
 
 if [[ -z "${image}" ]] || [[ -z "${bundle_id}" ]]; then
   echo 'You need to give both the path to an image and a bundle ID.' >&2
