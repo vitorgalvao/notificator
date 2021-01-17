@@ -18,6 +18,7 @@ if [[ ! -f "${jxa_script}" ]] || [[ ! -f "${shell_script}" ]]; then
 fi
 
 osacompile -l JavaScript -o "${output_app}" "${jxa_script}"
+codesign --remove-signature "${output_app}"
 
 /usr/libexec/PlistBuddy -c 'add :CFBundleIdentifier string com.vitorgalvao.notificator' "${output_app_plist}"
 /usr/libexec/PlistBuddy -c 'add :LSUIElement string 1' "${output_app_plist}"
