@@ -4,6 +4,8 @@ readonly program="$(basename "${0}")"
 readonly app_name='Notificator.app'
 readonly tmp_dir="$(mktemp -d)"
 
+trap 'rm -rf "${tmp_dir}"' EXIT
+
 function usage {
   echo "
     Usage:
