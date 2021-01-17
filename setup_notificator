@@ -77,6 +77,11 @@ if [[ -z "${image}" ]] || [[ -z "${bundle_id}" ]]; then
   exit 1
 fi
 
+if [[ -e "${output_app}" ]]; then
+  echo "${output_app} already exists. Will not overwrite." >&2
+  exit 2
+fi
+
 readonly notificator_release="$(curl --silent 'https://api.github.com/repos/vitorgalvao/notificator/releases/latest' | grep 'browser_download_url' | awk '{ print $2 }' | sed 's/"//g')"
 
 curl --silent --location "${notificator_release}" | ditto -xk - "${tmp_dir}"
