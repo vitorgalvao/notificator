@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 
 readonly program="$(basename "${0}")"
 readonly app_name='Notificator.app'

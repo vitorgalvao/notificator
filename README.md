@@ -6,7 +6,7 @@ macOS notifications tool unencumbered by licenses that is blazing fast to set up
 
 ### Download and setup
 
-```bash
+```zsh
 # Download the setup script
 curl --silent 'https://raw.githubusercontent.com/vitorgalvao/notificator/master/setup_notificator' --output '/tmp/setup_notificator' && chmod +x '/tmp/setup_notificator'
 # Run it with your options
@@ -19,11 +19,13 @@ Call it with `--help` to see all the options.
 
 Trigger a notification by calling the `notificator` script inside the app:
 
-```bash
-Notificator.app/Contents/Resources/Scripts/notificator --title 'This is a notification' --subtitle 'It has a subtitle' --message 'And plays a sound' --sound 'Frog'
+```zsh
+/bin/zsh Notificator.app/Contents/Resources/Scripts/notificator --title 'This is a notification' --subtitle 'It has a subtitle' --message 'And plays a sound' --sound 'Frog'
 ```
 
 Only `--message` is mandatory; all other flags are optional. Call it with `--help` to see all the options.
+
+Invoking with a shell (`/bin/zsh`) is necessary if you cannot afford to enroll into the Apple Developer Program to sign the app. It will sign itself with an ad-hoc signature.
 
 #### License
 
