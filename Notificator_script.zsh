@@ -72,6 +72,6 @@ if [[ -z "${notificator_message}" ]]; then
   exit 1
 fi
 
-osascript -l JavaScript -e 'ObjC.import("Cocoa"); while ($.NSEvent.modifierFlags & $.NSEventModifierFlagControl) { false }' # Prevent script from continuing while ctrl is pressed, otherwise we get the "Press Run to run this script, or Quit to quit." message
+osascript -l JavaScript -e 'ObjC.import("AppKit"); while ($.NSEvent.modifierFlags & $.NSEventModifierFlagControl) { false }' # Prevent script from continuing while ctrl is pressed, otherwise we get the "Press Run to run this script, or Quit to quit." message
 
 "${applet}" "${notificator_message}" "${notificator_title}" "${notificator_subtitle}" "${notificator_sound}"
