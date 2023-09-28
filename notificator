@@ -98,8 +98,8 @@ if [[ -z "${notificator_message}" ]]; then
   exit 1
 fi
 
-readonly bundle_id="$(tr -cd '[:alnum:]._-' <<< "${alfred_workflow_bundleid}")"
-readonly name="$(tr -cd '[:alnum:]._- ' <<< "${alfred_workflow_name}")"
+readonly bundle_id="$(/usr/bin/tr -cd '[:alnum:]._-' <<< "${alfred_workflow_bundleid}")"
+readonly name="$(/usr/bin/tr -cd '[:alnum:]._- ' <<< "${alfred_workflow_name}")"
 readonly icon="${alfred_preferences}/workflows/${alfred_workflow_uid}/icon.png"
 readonly app="${alfred_workflow_cache}/Notificator for ${name}.app"
 readonly plist="${app}/Contents/Info.plist"
@@ -160,17 +160,17 @@ readonly jxa_script='
   app.displayNotification(message, options)
 '
 
-[[ -d "${app}" ]] && rm -r "${app}"
+[[ -d "${app}" ]] && /bin/rm -r "${app}"
 /bin/mkdir -p "${alfred_workflow_cache}"
 /usr/bin/osacompile -l JavaScript -o "${app}" -e "${jxa_script}" 2> /dev/null
 
 # Modify Notificator
 /usr/libexec/PlistBuddy -c "add :CFBundleIdentifier string ${bundle_id}.notificator" "${plist}"
 /usr/libexec/PlistBuddy -c 'add :LSUIElement string 1' "${plist}"
-mv "$(make_icns "${icon}")" "${app}/Contents/Resources/applet.icns"
+/bin/mv "$(make_icns "${icon}")" "${app}/Contents/Resources/applet.icns"
 
 # Redo signature
-codesign --remove-signature "${app}"
-codesign --sign - "${app}"
+/usr/bin/codesign --remove-signature "${app}"
+/usr/bin/codesign --sign - "${app}"
 
 show_notification
