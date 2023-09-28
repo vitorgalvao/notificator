@@ -108,7 +108,7 @@ readonly app="${alfred_workflow_cache}/Notificator for ${name}.app"
 readonly plist="${app}/Contents/Info.plist"
 
 # Exit early if Notificator exists and was modified fewer than 30 days ago
-if [[ -e "${app}" && -n "$(find "${app}" -depth 0 -mtime -30)" ]]
+if [[ "$(/bin/date -r "${app}" +%s)" -gt "$(/bin/date -v -30d +%s)" ]]
 then
   show_notification
   exit 0
