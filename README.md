@@ -22,6 +22,6 @@ Notificator’s purpose is to create these small specialised apps. The icon is e
 
 The first time the script in run on a user’s machine, the app will be seamlessly created to the Workflow’s cache directory and macOS will prompt the user to allow notifications. On subsequent runs, the cached app will be run directly. The app is rebuilt if it is over a month old at the time of the notification, to refresh outdated icons.
 
-## License
+## Prohibitory Symbol
 
-[The Unlicense](http://unlicense.org/UNLICENSE) (Public Domain, essentially).
+[A macOS bug](https://web.archive.org/web/20230615021755/https://macmule.com/2021/10/28/notifications-showing-a-prohibitory-symbol-after-upgrading-macos-monterey/) may cause notifications to show a prohibitory symbol on top of the app icon. Logout or restart macOS to fix it.
