@@ -135,14 +135,7 @@ fi
 
 # Build Notificator
 readonly jxa_script='
-  // Build argv/argc in a way that can be used from the applet inside the app bundle
-  ObjC.import("Foundation")
-  const args = $.NSProcessInfo.processInfo.arguments
-  const argv = []
-  const argc = args.count
-  for (let i = 0; i < argc; i++) { argv.push(args.objectAtIndex(i).js) }
-
-  // Notification script
+  const argv = $.NSProcessInfo.processInfo.arguments.js.map(arg => arg.js)
   const app = Application.currentApplication()
   app.includeStandardAdditions = true
 
