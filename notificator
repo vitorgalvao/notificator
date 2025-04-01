@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/zsh --no-rcs
 
 ####################################################
 ### Created by Vítor Galvão                      ###
@@ -9,6 +9,11 @@
 readonly program="$(basename "${0}")"
 
 # Helpers
+function error {
+  echo "${1}" >&2
+  exit 1
+}
+
 function show_notification {
   /usr/bin/open "${app}" --args "${notificator_message}" "${notificator_title}" "${notificator_subtitle}" "${notificator_sound}"
 }
@@ -32,23 +37,26 @@ function make_icns {
   /usr/bin/iconutil --convert icns "${iconset}" --output "${icon}"
 
   # Clean up and return path to icns
-  /bin/rm -rf "${iconset}"
+  /bin/rm -r "${iconset}"
   echo "${icon}"
 }
 
+# Usage
 function usage {
   echo "
-    Trigger macOS notifications from Alfred, using the Workflow icon
+    Trigger macOS notifications from Alfred, using the Workflow icon.
+
+    Message is mandatory. Other flags are optional.
 
     Usage:
-      ${program} --message <text> [options]
+      ${program} --message <text> [--title <text>] [--subtitle <text>] [--sound <name>]
 
     Options:
-      -m, --message <text>       Message text
-      -t, --title <text>         Title text
-      -s, --subtitle <text>      Subtitle text
-      -p, --sound <name>         Sound name (from /System/Library/Sounds)
-      -h, --help                 Show this help
+      -m, --message <text>    Message text.
+      -t, --title <text>      Title text.
+      -s, --subtitle <text>   Subtitle text.
+      -p, --sound <name>      Sound name (from /System/Library/Sounds).
+      -h, --help              Show this help.
   " | sed -E 's/^ {4}//'
 }
 
@@ -95,11 +103,7 @@ done
 set -- "${args[@]}"
 
 # Check for required arguments
-if [[ -z "${notificator_message}" ]]
-then
-  echo 'A message is mandatory! Aborting…' >&2
-  exit 1
-fi
+[[ -n "${notificator_message}" ]] || error 'A message is mandatory! Aborting…'
 
 readonly bundle_id="$(/usr/bin/tr -cd '[:alnum:]._-' <<< "${alfred_workflow_bundleid}")"
 readonly name="$(/usr/bin/tr -cd '[:alnum:]._- ' <<< "${alfred_workflow_name}")"
@@ -115,23 +119,9 @@ then
 fi
 
 # Pre-build checks
-if [[ -z "${bundle_id}" ]]
-then
-  echo "Workflow is missing the bundle identifier! Aborting…" >&2
-  exit 1
-fi
-
-if [[ -z "${name}" ]]
-then
-  echo "Workflow is missing the name! Aborting…" >&2
-  exit 1
-fi
-
-if [[ ! -f "${icon}" ]]
-then
-  echo "Workflow is missing the icon! Aborting…" >&2
-  exit 1
-fi
+[[ -n "${bundle_id}" ]] || error "Workflow is missing bundle identifier! Aborting…"
+[[ -n "${name}" ]]      || error "Workflow is missing name! Aborting…"
+[[ -f "${icon}" ]]      || error "Workflow is missing icon! Aborting…"
 
 # Build Notificator
 readonly jxa_script='
@@ -139,10 +129,10 @@ readonly jxa_script='
   const app = Application.currentApplication()
   app.includeStandardAdditions = true
 
-  if (argv.length < 2) { // We use "2" because the script will always see at least one argument: the applet itself
+  if (argv.length < 2) { // The script will always see at least one argument: the applet itself
     argv[1] = "Opening usage instructions…"
     argv[2] = "Notificator is a command-line app"
-    argv[4] = "Funk"
+    argv[4] = "Sosumi"
 
     app.openLocation("https://github.com/vitorgalvao/notificator#usage")
   }
