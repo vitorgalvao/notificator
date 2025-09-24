@@ -18,29 +18,6 @@ function show_notification {
   /usr/bin/open "${app}" --args "${notificator_message}" "${notificator_title}" "${notificator_subtitle}" "${notificator_sound}"
 }
 
-function make_icns {
-  # Setup
-  local -r file="${1}"
-  local -r tmp_dir="$(/usr/bin/mktemp -d)"
-  local -r icon="${tmp_dir}/icon.icns"
-  local -r iconset="${tmp_dir}/icon.iconset"
-  /bin/mkdir "${iconset}"
-
-  # Create iconset
-  for size in {16,32,64,128,256,512}
-  do
-    /usr/bin/sips --resampleHeightWidth "${size}" "${size}" "${file}" --out "${iconset}/icon_${size}x${size}.png" &> /dev/null
-    /usr/bin/sips --resampleHeightWidth "$((size * 2))" "$((size * 2))" "${file}" --out "${iconset}/icon_${size}x${size}@2x.png" &> /dev/null
-  done
-
-  # Convert to icns
-  /usr/bin/iconutil --convert icns "${iconset}" --output "${icon}"
-
-  # Clean up and return path to icns
-  /bin/rm -r "${iconset}"
-  echo "${icon}"
-}
-
 # Usage
 function usage {
   echo "
@@ -108,11 +85,12 @@ set -- "${args[@]}"
 readonly bundle_id="$(/usr/bin/tr -cd '[:alnum:]._-' <<< "${alfred_workflow_bundleid}")"
 readonly name="$(/usr/bin/tr -cd '[:alnum:]._- ' <<< "${alfred_workflow_name}")"
 readonly icon="${alfred_preferences}/workflows/${alfred_workflow_uid}/icon.png"
+readonly checksum_icon="$(/usr/bin/shasum "${icon}" | cut -d ' ' -f 1)"
 readonly app="${alfred_workflow_cache}/Notificator for ${name}.app"
 readonly plist="${app}/Contents/Info.plist"
 
-# Exit early if Notificator exists and was modified fewer than 30 days ago
-if [[ -d "${app}" && "$(/bin/date -r "${app}" +%s)" -gt "$(/bin/date -v -30d +%s)" ]]
+# Exit early if Notificator exists and workflow icon is unmodified (its checksum equals the last field of the bundle ID)
+if [[ -d "${app}" && "${checksum_icon}" == "$(/usr/libexec/PlistBuddy -c "print :CFBundleIdentifier" "${plist}" | /usr/bin/awk -F '.' '{print $NF}')" ]]
 then
   show_notification
   exit 0
@@ -155,12 +133,23 @@ readonly jxa_script='
 /usr/bin/osacompile -l JavaScript -o "${app}" -e "${jxa_script}" 2> /dev/null
 
 # Modify Notificator
-/usr/libexec/PlistBuddy -c "add :CFBundleIdentifier string ${bundle_id}.notificator" "${plist}"
+/usr/libexec/PlistBuddy -c "add :CFBundleIdentifier string ${bundle_id}.notificator.${checksum_icon}" "${plist}"
 /usr/libexec/PlistBuddy -c 'add :LSUIElement string 1' "${plist}"
-/bin/mv "$(make_icns "${icon}")" "${app}/Contents/Resources/applet.icns"
 
 # Redo signature
 /usr/bin/codesign --remove-signature "${app}"
 /usr/bin/codesign --sign - "${app}"
 
+# Modify icon
+# Must be done after signing to not get "resource fork, Finder informartion, or similar detritus not allowed" error
+/usr/bin/osascript -l JavaScript -e '
+  ObjC.import("AppKit")
+
+  function run(argv) {
+    const image = $.NSImage.alloc.initWithContentsOfFile(argv[0])
+    $.NSWorkspace.sharedWorkspace.setIconForFileOptions(image, argv[1], 0)
+  }
+' "${icon}" "${app}"
+
+# Notification
 show_notification

@@ -30,11 +30,9 @@ Options:
 
 ## How it works
 
-While it is possible to trigger notifications from AppleScript, those show a generic icon. To have a custom icon in full view, an app is required.
+While it is possible to trigger notifications from AppleScript, those show a generic icon. To have a custom icon in full view, an app is required. Notificator’s purpose is to create these small specialised apps.
 
-Notificator’s purpose is to create these small specialised apps. The icon is extracted from the Workflows’s root directory and the bundle identifier is derived from the Workflow’s—it is cleaned up and `.notificator` is appended.
-
-The first time the script is run on a user’s machine, the app is seamlessly created to the Workflow’s cache directory and macOS prompts the user to allow notifications. On subsequent runs, the cached app is run directly. The app is rebuilt if it is over a month old at the time of the notification, to refresh outdated icons.
+The icon is extracted from the Workflows’s root directory and the bundle identifier is based on the Workflow’s. The first time the script is run on a user’s machine, the app is seamlessly created to the Workflow’s cache directory and macOS prompts the user to allow notifications. On subsequent runs, the cached app is run directly. The app is rebuilt if the Workflow icon was modified since the last run.
 
 ## Prohibitory Symbol
 
