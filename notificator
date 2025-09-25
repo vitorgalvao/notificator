@@ -6,7 +6,20 @@
 ###   https://github.com/vitorgalvao/notificator ###
 ####################################################
 
-readonly program="$(basename "${0}")"
+readonly this=$0
+readonly program=${this:t}
+readonly prog_dir=${this:A:h}
+readonly wf_dir=${(M)this#*/user.workflow*/}
+
+# if running outside of Alfred, populate vars
+if [[ -z $alfred_workflow_uid ]]; then
+  readonly infoplist=${wf_dir}/info.plist
+  readonly alfred_workflow_uid=${wf_dir:t}
+  readonly alfred_workflow_name=$(/usr/bin/plutil -extract name raw "$infoplist" 2>/dev/null)
+  readonly alfred_workflow_bundleid=$(/usr/bin/plutil -extract bundleid raw "$infoplist" 2>/dev/null)
+  readonly alfred_workflow_cache="$HOME/Library/Caches/com.runningwithcrayons.Alfred/Workflow Data/$alfred_workflow_bundleid"
+  readonly alfred_preferences=${wf_dir:h:h}
+fi
 
 # Helpers
 function error {
@@ -16,6 +29,18 @@ function error {
 
 function show_notification {
   /usr/bin/open "${app}" --args "${notificator_message}" "${notificator_title}" "${notificator_subtitle}" "${notificator_sound}"
+}
+
+function show_wf_vars {
+  echo this=$this
+  echo program=$program
+  echo prog_dir=$prog_dir
+  echo wf_dir=$wf_dir
+  echo alfred_workflow_uid=$alfred_workflow_uid
+  echo alfred_workflow_bundleid=$alfred_workflow_bundleid
+  echo alfred_workflow_name=$alfred_workflow_name
+  echo alfred_workflow_cache=$alfred_workflow_cache
+  echo alfred_preferences=$alfred_preferences
 }
 
 # Usage
@@ -34,6 +59,7 @@ function usage {
       -s, --subtitle <text>   Subtitle text.
       -p, --sound <name>      Sound name (from /System/Library/Sounds).
       -h, --help              Show this help.
+      -v, --vars              Show vars that would be used (for debugging).
   " | sed -E 's/^ {4}//'
 }
 
@@ -61,6 +87,10 @@ do
     -p | --sound)
       readonly notificator_sound="${2}"
       shift
+      ;;
+    -v | --vars)
+      show_wf_vars
+      exit
       ;;
     --)
       shift
